@@ -4,11 +4,11 @@
 #include <Preferences.h>
 
 // Replace with your network credentials
-const char* ssid = "Mold_Free";
-const char* password = "keen09042021";
+const char* ssid = "****";
+const char* password = "****";
 
-WiFiServer server(80);
-Preferences preferences;
+WiFiServer server(80);                              // Web Server
+Preferences preferences;                            // Non-volatile storage (NVS)
 
 unsigned long startMillis;
 unsigned long elapsedMillis;
@@ -25,9 +25,9 @@ void setup() {
 
   // Initialize Preferences
   preferences.begin("counter", false);
+  savedCounter = preferences.getULong("counter", 0);
 
   // Retrieve the saved counter value
-  savedCounter = preferences.getULong("counter", 0);
   startMillis = millis() - savedCounter;
 
   // Connect to Wi-Fi
@@ -48,7 +48,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   // Start the server
-  server.begin();
+  server.begin();                                       // Start the server
 }
 
 void loop() {
