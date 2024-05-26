@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>ESP32 Clock and Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+        }
+        .container {
+            display: inline-block;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .clock {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .leaderboard {
+            text-align: left;
+            margin-top: 30px;
+        }
+        .leaderboard h2 {
+            margin-bottom: 10px;
+        }
+        .leaderboard ol {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello from ESP32!</h1>
+        <div class="clock">
+            Current Time: <span id="current-time">--:--:--</span>
+        </div>
+        <div class="clock">
+            Clock Counter: <span id="clock-counter">00:00</span>
+        </div>
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ol id="leaderboard">
+                <li>Player 1 - 02:34</li>
+                <li>Player 2 - 01:45</li>
+                <li>Player 3 - 00:50</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function updateCurrentTime() {
+            var now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString();
+        }
+
+        function startClockCounter(savedCounter) {
+            var startTime = new Date().getTime() - savedCounter;
+            setInterval(function() {
+                var now = new Date().getTime();
+                var elapsed = now - startTime;
+                var minutes = String(Math.floor(elapsed / 60000) % 60).padStart(2, '0');
+                var seconds = String(Math.floor(elapsed / 1000) % 60).padStart(2, '0');
+                document.getElementById('clock-counter').textContent = minutes + ':' + seconds;
+            }, 1000);
+        }
+
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        // Retrieve the saved counter value from the server
+        startClockCounter({{savedCounter}});
+    </script>
+</body>
+</html>
